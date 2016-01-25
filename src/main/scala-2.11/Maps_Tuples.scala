@@ -1,5 +1,5 @@
 import scala.collection.mutable
-import scala.io.Source
+
 
 /**
  * Created by Barn on 24/01/2016.
@@ -16,25 +16,29 @@ object Maps_Tuples extends App {
     "Climbing pass" -> 300
   )
 
+  //Print out a map using a for loop
   for((key, value) <- covet) println(key + "   " + value)
 
   def reduce10(x: Double) = x * 0.9
   val reduced = covet.map(j => (j._1, reduce10(j._2)))
   println("Map Reduced by 10%: " + reduced)
 
+  //map a HashMap using case statements so the values have new values
   val newMap = covet map {
     case (k, v) => (k, v * 0.9)
   }
   println(newMap)
 
+  //Read in a file using Scala
   def readInFile: Array[String] = {
+    import scala.io.Source
     val source = Source.fromFile("/Users/Barn/Desktop/ioFile.txt", "UTF-8") //Don't have to include encoding type
     val tokens = source.mkString.split("\\s+") //Split the text file at each space OR many spaces.
     tokens
   }
 
   /**
-   * 2
+   * 2 - Count words from a file and store frequency in a Map[Word -> FREQ]
    */
   def scalaReadFile = {
     val tokens = readInFile
@@ -44,8 +48,7 @@ object Maps_Tuples extends App {
     //check to frequency Map for current token - if exists +1 to the value Else return 0
     for(t <- tokens) frequency(t) = frequency.getOrElse(t, 0) + 1
 
-    val padding = frequency.keysIterator.map(_.length) max
-
+    val padding = frequency.keysIterator.map(_.length).max
     for((key, value) <- frequency) printf("Key: %-" + padding +"s|   Value: %s\n", key, value )
   }
   scalaReadFile
@@ -86,6 +89,9 @@ object Maps_Tuples extends App {
   linkedHashMap += ("Tuesday" -> TUESDAY)
   linkedHashMap += ("Wednesday" -> WEDNESDAY)
   linkedHashMap += ("Thursday" -> THURSDAY)
+
+  val padd = linkedHashMap.keys.map(_.length).max
+  val padd1 = linkedHashMap.keysIterator.reduceLeft((a, b) => if (a.length > b.length) a else b)
 
   for ((key, value) <- linkedHashMap)  printf("%s=%d\n", key, value)
 
